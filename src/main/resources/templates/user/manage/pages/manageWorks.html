@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" th:href="@{/static/bootstrap/bootstrap-icons/bootstrap-icons.css}">
+    <link type="text/css" rel="stylesheet" th:href="@{/static/bootstrap/bootstrap_3.3.0/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/static/bootstrap/bootstrap_5.1.3/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/static/dist/css/BSA.css}">
+    <link rel="stylesheet" th:href="@{/static/bs_pagination-master/css/jquery.bs_pagination.min.css}">
+    <!--  dropzone插件必须的css  -->
+    <link rel="stylesheet" th:href="@{/static/dropzone/dropzone.css}">
+    <!--  dropzone插件基于boostrap-admin的css美化  -->
+    <link rel="stylesheet" th:href="@{/static/dropzone/dropzone_bsaex.css}">
+    <title>个人资料</title>
+</head>
+<body>
+<!-- 模态框 -->
+<div class="modal" id="editWorksModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">修改摄影作品</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- 模态框内容 -->
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="editUserWorksTitle" class="form-label">作品简介</label>
+                                    <input type="text" class="form-control" id="editUserWorksTitle" name="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editUserWorksTitle" class="form-label">作品类别</label>
+                                    <select class="form-select" id="editUserWorksDescription">
+                                        <option>风景摄影</option>
+                                        <option>美食摄影</option>
+                                        <option>花卉摄影</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="pic" class="form-label">上传摄影作品</label>
+                                    <div class="dropzone" id="pic-wrapper"></div>
+                                    <input type="text" class="form-control position-fixed top-100" id="pic" name="pic">
+                                    <input type="hidden" class="imgSrc" name="title">
+                                    <input type="hidden" class="imgSrc" name="title">
+                                    <input type="hidden" class="imgSrc" name="title">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button id="saveEditUserWorks" type="button" class="btn btn-primary" data-bs-dismiss="modal">提交</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+                <!--<div class="col">
+                    <a class="btn btn-outline-primary" href="javascript:" role="button"><i class="bi bi-plus"></i>新增</a>
+                </div>
+
+                <div class="col">
+                    <a class="btn btn-outline-dark" href="javascript:" role="button"><i class="bi bi-x-octagon"></i>禁用</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-outline-danger" href="javascript:" role="button"><i class="bi bi-x"></i>删除</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-outline-warning" href="javascript:" role="button"><i class="bi bi-trash"></i>回收站</a>
+                </div>-->
+                <form role="form">
+                    <div>
+                    <input id="searchWorks" class="form-control me-2" type="search" placeholder="摄影作品查询(可依据内容或简介)"
+                    style="width: 400px;height: 50px;">
+                    <button id="searchWorksByUser" class="btn btn-primary" type="button"
+                    style="position: absolute;top: 0px;left: 420px;height: 50px;">查询</button>
+                    &nbsp;
+                    <!--<td>-->
+                    <button id="resetUserWorks" class="btn btn-warning" type="button"
+                    style="position: absolute;top: 0px;left: 500px;height: 50px;">重置</button>
+
+                        <button type="button" class="btn btn-default" id="editUserWorksBtn"
+                        style="position: absolute;top: 0px;left: 600px;height: 50px;" data-toggle="modal" data-target="#editWorksModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+                        <button type="button" class="btn btn-danger"  id="deleteUserWorksBtn"
+                        style="position: absolute;top: 0px;left: 700px;height: 50px;"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+
+                    </div>
+                    <!--</td>-->
+                </form>
+                <!--<div class="d-flex">
+                    <a class="btn btn-outline-warning" href="javascript:" role="button">重置</a>
+                </div>-->
+
+            <hr>
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="checkAll" />
+                        </th>
+                        <th>摄影作品编号</th>
+                        <th>摄影作品简介</th>
+                        <th>摄影作品内容</th>
+                        <th>图片</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tBody">
+                    <!--<tr>
+                        <td>
+                            <input type="checkbox"/>
+                        </td>
+                        <td>1</td>
+                        <td>admin21</td>
+                        <td>男</td>
+                        <td>王伟</td>
+                        <td>15805136482</td>
+                        <td>
+                            <img src="">
+                        </td>
+
+                    </tr>-->
+
+                    </tbody>
+                </table>
+            </div>
+           <!-- &lt;!&ndash; 模态框 &ndash;&gt;
+            <div class="modal fade" id="editWorksModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        &lt;!&ndash; 模态框头部 &ndash;&gt;
+                        <div class="modal-header">
+                            <h4 class="modal-title">修改摄影作品</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+
+                        &lt;!&ndash; 模态框内容 &ndash;&gt;
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">作品简介</label>
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">作品类别</label>
+                                <select class="form-select" id="description">
+                                    <option>风景摄影</option>
+                                    <option>美食摄影</option>
+                                    <option>花卉摄影</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pic" class="col-sm-2 control-label">上传摄影作品</label>
+                                <div class="dropzone" id="pic-wrapper"></div>
+                                <input type="text" class="form-control position-fixed top-100" id="pic" name="pic">
+                                <input type="hidden" class="imgSrc" name="title">
+                                <input type="hidden" class="imgSrc" name="title">
+                                <input type="hidden" class="imgSrc" name="title">
+                            </div>
+                            </form>
+                        </div>
+
+                        &lt;!&ndash; 模态框底部 &ndash;&gt;
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">关闭</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>-->
+
+
+        <!--<nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="javascript:" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="javascript:">1</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:">2</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>-->
+            <div id="pagination"></div>
+
+
+
+<script type="text/javascript" th:src="@{/static/jquery/jquery-1.11.1-min.js}"></script>
+<script th:src="@{/static/bootstrap/bootstrap_5.1.3/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/static/dist/js/BSA.js}"></script>
+<!--分页插件-->
+<script type="text/javascript" th:src="@{/static/bs_pagination-master/js/jquery.bs_pagination.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/bs_pagination-master/localization/en.js}"></script>
+<script type="text/javascript" th:src="@{/static/tinymce/tinymce.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/dropzone/dropzone2-min.js}"></script>
+<script type="text/javascript">
+    $(function () {
+
+        //给“查询”按钮添加单击事件
+        $("#searchWorksByUser").click(function () {
+            var searchWorks = $("#searchWorks").val();
+            //当查询输入框有内容时，传入查询内容
+            if(searchWorks!=null&&searchWorks!=""){
+                //当用户点击“查询”按钮时，显示所有数据的第一页和所有数据的总条数
+                selectWorksByConditionalForPage(1,$("#pagination").bs_pagination('getOption','rowsPerPage'),searchWorks);
+            }else{
+                selectWorksByConditionalForPage(1,$("#pagination").bs_pagination('getOption','rowsPerPage'));
+            }
+
+        });
+
+        //给“重置”按钮添加单击事件
+        $("#resetUserWorks").click(function () {
+            var searchWorks = $("#searchWorks").val("");
+            selectWorksByConditionalForPage(1,$("#pagination").bs_pagination('getOption','rowsPerPage'),searchWorks);
+        });
+
+        //给“删除”按钮添加单击事件
+        $("#deleteUserWorksBtn").click(function () {
+            //选择列表中所有被选中状态的checkbox
+            var checkedIds = $("#tBody input[type='checkbox']:checked");
+            if(checkedIds.size()==0){
+                alert("请选择需要删除的摄影作品");
+                return;
+            }
+            if(window.confirm("确认删除吗")){
+                //拼接字符串，发送ajax请求
+                var ids = "";
+                $.each(checkedIds,function () {	//id=XXXX&id=XXXX&id=XXXX&
+                    //将checkIds中的每个id属性（value)拼接,this代表jquery的dom对象（checkedIds）
+                    ids+="id="+this.value+"&";
+                })
+                //substr标识index从0开始（包括0），第二个参数表示截取的个数
+                ids = ids.substr(0,ids.length-1);
+                $.ajax({
+                    url:'/user/manage/pages/deleteUserWorksByIds',
+                    data:ids,
+                    type:'post',
+                    dataType:'json',
+                    success:function (data) {
+                        if(data.code==200){
+                            //刷新市场活动信息，显示第一列的数据,保持每页显示条数不变
+                            selectWorksByConditionalForPage(1,$("#pagination").bs_pagination('getOption','rowsPerPage'));
+                        }else {
+                            alert(data.message);
+                        }
+                    }
+                });
+            }
+        });
+
+        //给“修改”按钮添加单击事件
+        $("#editUserWorksBtn").click(function () {
+            //选择列表中被选中的checkbox
+            var checkedId = $("#tBody input[type='checkbox']:checked");
+            //进行判断
+            if(checkedId.size()==0){
+                alert("请选择需要修改的摄影作品");
+                return;
+            }
+            if(checkedId.size()>1){
+                alert("只能选择一个需要修改的摄影作品");
+                return;
+            }
+            var id = checkedId[0].value;
+            $.ajax({
+                url:'/user/manage/pages/selectUserWorksById',
+                data:{
+                    id:id
+                },
+                type: 'post',
+                dataType:'json',
+                success:function (response) {
+                    $("#editUserWorksTitle").val(response.data.title);
+                    $("#editUserWorksDescription").val(response.data.description);
+                }
+            });
+            $("#editWorksModal").modal('show');
+        });
+
+        //给“提交”按钮添加单击事件
+        $("#saveEditUserWorks").click(function () {
+            //收集参数
+            var editUserWorksTitle = $("#editUserWorksTitle").val();
+            var editUserWorksDescription = $("#editUserWorksDescription").val();
+            var imgSrcs = $(".imgSrc");
+            var imgSrc = [];
+            for(i=0;i<imgSrcs.length;i++){
+                if($(imgSrcs[i]).val()!=''){
+                    imgSrc.push($(imgSrcs[i]).val());
+                }
+            }
+            //选择列表中被选中的checkbox
+            var checkedId = $("#tBody input[type='checkbox']:checked");
+            var id = checkedId[0].value;
+            var param ={"editUserWorksTitle":editUserWorksTitle,"editUserWorksDescription":editUserWorksDescription,
+                "imgSrc":imgSrc.toString(), "id":id};
+            $.ajax({
+                url:'/user/manage/pages/saveEditUserWorks',
+                data:param,
+                type:'post',
+                dataType:'json',
+                success:function (response) {
+                    if(response.code==200){
+                        alert("修改摄影作品成功");
+                        //关闭模态窗口
+                        $("#editWorksModal").modal("hide");
+                        //刷新摄影作品信息，显示之前所停留的数据列数,保持每页显示条数不变
+                        selectWorksByConditionalForPage($("#pagination").bs_pagination('getOption','currentPage'),$("#pagination").bs_pagination('getOption','rowsPerPage'));
+                    }else{
+                        alert("修改摄影作品失败");
+                        //不关闭模态窗口
+                        $("#editWorksModal").modal("hide");
+                    }
+                },
+                error:function () {
+                    alert("发生错误了");
+                },
+                beforeSend:function () {
+                    if(editUserWorksTitle==""){
+                        alert("作品简介不能为空！");
+                        return false;
+                    }
+                    return true;
+                }
+            });
+        });
+
+        //给“全选”按钮添加单击事件
+        $("#checkAll").click(function () {
+            //如果“全选”按钮处于选中状态，则列表所有的checkbox都选中
+            $("#tBody input[type='checkbox']").prop("checked",true);
+        });
+        $("#tBody").on("click","input[type='checkbox']",function () {
+            //如果列表中的所有按钮都选中，则全选按钮也选中
+            if($("#tBody input[type='checkbox']").size()==$("#tBody input[type='checkbox']:checked").size()){
+                $("#checkAll").prop("checked",true);
+            }else{
+                //如果列表中的所有按钮至少有一个没有选中，则全选按钮也不选中
+                $("#checkAll").prop("checked",false);
+            }
+        });
+
+        //当摄影作品信息主页面加载完成后，显示所有数据的第一页和所有数据的总条数
+        selectWorksByConditionalForPage(1,3);
+
+        //条件请求查询
+        //pageNo:当前页码；pageSize：当前页显示条数；key：关键字
+        function selectWorksByConditionalForPage(pageNo,pageSize,userWorks){
+            userWorks = $.trim($("#searchWorks").val());
+            //发送请求
+            $.ajax({
+                url:'/user/manage/pages/selectWorksByConditionalForPage',
+                data:{
+                    pageNo:pageNo,
+                    pageSize:pageSize,
+                    userWorks:userWorks
+                },
+                type:'post',
+                dataType:'json',
+                success:function (response) {
+                    //显示总条数
+                    $("#totalRowsB").text(response.data.total);
+
+                    //显示列表，拼接数据
+                    var htmlStr = "";
+                    $.each(response.data.records,function (index,obj) {
+                            htmlStr +="<tr className=\"active\">";
+                            htmlStr +="<td><input type=\"checkbox\" value=\""+obj.id+"\"/></td>";
+                            htmlStr +="<td>"+(index+1)+"</td>";
+                            htmlStr +="<td>"+obj.title+"</td>";
+                            htmlStr +="<td>"+obj.description+"</td>";
+                            var src = obj.src;
+                            var srcs = src.toString().split(",");
+                            //接收src地址后，调用split方法根据逗号分割变成数组后再次循环
+                           $.each(srcs,function (index,item) {
+                               console.log(item);
+                               htmlStr+="<td><img src=\""+item+"\" style=\"width: 100px;height: 100px\"></td>";
+                           });
+                    });
+                    $("#tBody").html(htmlStr);
+                    //计算总页数
+                    var totalPages = 1;
+                    if(response.data.total%pageSize==0){
+                        totalPages = response.data.total/pageSize ;
+                    }else{
+                        totalPages = parseInt(response.data.total/pageSize)+1;
+                    }
+                    //调用bs_pagination工具函数，显示翻页信息
+                    $("#pagination").bs_pagination({
+                        currentPage:response.data.current,	//当前页号，相当于pageNo
+                        rowsPerPage:response.data.size,	//每页显示条数，相当于pageSize
+                        totalRows:response.data.total,	//总条数
+                        totalPages:response.data.pages,	//总页数，必填参数
+                        visiblePageLinks: 5,	//最多可以显示的卡片数
+                        showGoToPage: true,	//是否显示“跳转到”部分，默认true--显示
+                        showRowsPerPage: true,	//是否显示“每页显示条数”部分，默认true--显示
+                        showRowsInfo: true,	//是否显示记录的信息，默认true--显示
+                        //用户每次切换页号，都自动触发本函数
+                        //每次返回切换页号之后的pageNo和pageSize
+                        onChangePage:function (event,pageObj) {
+                            //js代码
+                            selectWorksByConditionalForPage(pageObj.currentPage,pageObj.rowsPerPage);
+                        }
+                    });
+                }
+            });
+        }
+
+    });
+</script>
+<script>
+    let picWrapper = new Dropzone("#pic-wrapper", {
+        url: "/user/upload",
+        headers: {
+            //这里一般的mvc框架都有这个防止csrf攻击的方法用来生成token
+            'X-CSRF-TOKEN': 'xxxxxx'
+        },
+        paramName: "file", // 上传字段名称 默认为file
+        maxFiles: 3,// 一次性上传的文件数量上限
+        maxFilesize: 5, // 文件大小，单位：MB
+        acceptedFiles: ".jpg,.gif,.png,.jpeg", // 上传的类型
+        addRemoveLinks: true,
+        parallelUploads: 3,// 一次上传的文件数量
+        dictDefaultMessage: '拖动文件至此或者点击上传',
+        dictMaxFilesExceeded: "最多只能上传3张封面",
+        dictResponseError: '文件上传失败!',
+        dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg",
+        dictFallbackMessage: "浏览器不受支持",
+        dictFileTooBig: "最大只能上传2M大小的封面.",
+        dictRemoveLinks: "删除",
+        dictRemoveFile: "删除",
+        dictCancelUpload: "取消",
+        init: function () {
+
+            //这一段代码解决最大上传文件数量(不用管)
+            this.on("addedfile", function (file) {
+                if (this.files.length > this.options.maxFiles) {
+                    this.removeFile(file);
+                }
+            });
+
+            this.on("success", function (file, response) {
+                if (response.code === 200) {
+
+                    for(i=0;i<3;i++){
+                        if ($($(".imgSrc")[i]).val() == '') {
+                            $($(".imgSrc")[i]).val(response.data.src);
+                            break;
+                        }
+                    }
+
+                    // 解决表单提交时，图片以#隔开解决
+                    let arr = $('#fang_cover').val().split(',').filter(item => item);
+                    arr.push(response.data);
+                    let str = arr.join(',');
+
+                    //同时把该值存到file对象上,等会儿删除的时候要通过它清空隐藏域的id值
+                    file.id = response.data;
+
+                } else {
+
+                    //文件上传失败
+                    $(file.previewTemplate).removeClass('dz-processing dz-image-preview dz-success').addClass('dz-error');
+                    $(file.previewTemplate).find('.dz-error-message span').text(response.msg);//response.msg是后台返回的上传错误信息
+                }
+            });
+
+            //文件上传同时也要清空input隐藏域的id值
+            this.on("removedfile", function (file) {
+                var xhr = JSON.parse(file.xhr.response);
+                if (file.id !== undefined) {
+                    let arr = $('#fang_cover').val().split(',');
+                    arr.splice(arr.indexOf(file.id), 1);
+                    let str = arr.join(',');
+                }
+                for(i=0;i<3;i++){
+                    //取消则删除input框src
+                    if ($($(".imgSrc")[i]).val() == xhr.data.src){
+                        $($(".imgSrc")[i]).val('');
+                    }
+                }
+            });
+        }
+    });
+</script>
+<script>
+    tinymce.init({
+        language: 'zh-Hans',
+        selector: '#content',
+        plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+        editimage_cors_hosts: ['picsum.photos'],
+        menubar: 'file edit view insert format tools table help',
+        toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+
+        toolbar_sticky: false,
+        //当toolbar_sticky设置为true时生效
+        toolbar_sticky_offset: 108,
+        //如果写了内容页面刷新前询问是否退出
+        autosave_ask_before_unload: false,
+        autosave_interval: '30s',
+        autosave_prefix: '{path}{query}-{id}-',
+        autosave_restore_when_empty: false,
+        autosave_retention: '2m',
+        image_advtab: true,
+        branding: false,
+        link_list: [
+            {title: 'My page 1', value: 'https://www.tiny.cloud'},
+            {title: 'My page 2', value: 'http://www.moxiecode.com'}
+        ],
+        image_list: [
+            {title: 'My page 1', value: 'https://www.tiny.cloud'},
+            {title: 'My page 2', value: 'http://www.moxiecode.com'}
+        ],
+        image_class_list: [
+            {title: 'None', value: ''},
+            {title: 'Some class', value: 'class-name'}
+        ],
+        importcss_append: true,
+        file_picker_callback: (callback, value, meta) => {
+            /* Provide file and text for the link dialog */
+            if (meta.filetype === 'file') {
+                callback('https://www.google.com/logos/google.jpg', {text: 'My text'});
+            }
+
+            /* Provide image and alt text for the image dialog */
+            if (meta.filetype === 'image') {
+                callback('https://www.google.com/logos/google.jpg', {alt: 'My alt text'});
+            }
+
+            /* Provide alternative source and posted for the media dialog */
+            if (meta.filetype === 'media') {
+                callback('movie.mp4', {source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg'});
+            }
+        },
+        templates: [
+            {
+                title: 'New Table',
+                description: 'creates a new table',
+                content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
+            },
+            {title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...'},
+            {
+                title: 'New list with dates',
+                description: 'New List with dates',
+                content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
+            }
+        ],
+        template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+        template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+        height: 300,
+        image_caption: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        noneditable_class: 'mceNonEditable',
+        toolbar_mode: 'sliding',
+        contextmenu: 'link image table',
+        skin: 'oxide', //oxide  oxide-dark
+        content_css: 'default', //dark default
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+        setup: (editor) => {
+            editor.on('init', (e) => {
+                console.log('tinymce-init');
+            });
+        },
+        init_instance_callback: (editor) => {
+            editor.on('input paste ExecCommand', (e) => {
+                $('#fang_content_temp').val(tinyMCE.activeEditor.getContent()).trigger('input');
+            });
+        }
+    });
+</script>
+</body>
+</html>

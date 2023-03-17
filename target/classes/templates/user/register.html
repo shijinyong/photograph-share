@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" th:href="@{/static/css/noticejs.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/static/bootstrap/bootstrap_3.3.0/css/bootstrap.min.css}" />
+
+    <script type="text/javascript" th:src="@{/static/jquery/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/notice.js}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //用户名输入框失去焦点
+            $("#registerName").blur(function () {
+                var registerName = $.trim($("#registerName").val());
+                $.get("/getVerifyUserName",{registerName:registerName},function (response) {
+                    if(response.code==204){
+                        //提示用户存在信息
+                        $("#message").html(response.message);
+                    }else if(response.code==200){
+                        //不存在则清空提示信息
+                        $("#message").html("");
+                    }
+                });
+            });
+            //点击按钮注册
+            $("#registerBtn").click(function () {
+                //收集参数
+                var registerName = $.trim($("#registerName").val());
+                var registerPassword = $.trim($("#registerPassword").val());
+                var registerVerifyPassword = $.trim($("#registerVerifyPassword").val());
+                var verify = $.trim($("#verify").val());
+                $.ajax({
+                    url:'/userRegister',
+                    data:{
+                        registerName:registerName,
+                        registerPassword:registerPassword,
+                        registerVerifyPassword:registerVerifyPassword,
+                        verify:verify
+                    },
+                    type:'post',
+                    dataType:'json',
+                    success:function (response) {
+                        if(response.code==205){
+                            $("#message").html(response.message);
+                        }else if(response.code==203){
+                            $("#message").html(response.message);
+                        }else if(response.code==200){
+                            new NoticeJs({
+                                text: '注册成功',
+                                position: 'topCenter',
+                            }).show();
+                            //注册成功后3秒再进行跳转
+                            window.setTimeout(function () {
+                                window.location.href="/toUserLogin";
+                            },3000);
+                        }
+                    },
+                    error:function () {
+                        $("#message").html("发生错误了");
+                    },
+                    beforeSend:function () {
+                        //表单验证
+                        if(registerName==""){
+                            $("#message").html("用户名不能为空!");
+                            return false;
+                        }
+                        if(registerPassword==""){
+                            $("#message").html("密码不能为空!");
+                            return false;
+                        }
+                        if(registerVerifyPassword==""){
+                            $("#message").html("确认密码不能为空!");
+                            return false;
+                        }
+                        if(verify==""){
+                            $("#message").html("验证码不能为空!");
+                            return false;
+                        }
+                        //当发送ajax请求前使用该函数进行验证，当该函数返回true时则
+                        //执行ajax请求，否则不执行
+                        return true;
+                    }
+                });
+            });
+            //点击超链接刷新图片
+            $("a").click(function (){
+                $("#verifyCode").attr("src","/getVerifyCode?"+new Date().getTime());
+            });
+        });
+    </script>
+    <title>用户注册界面</title>
+</head>
+<body>
+<div style="position: absolute; top: 0px; left: 0px; width: 100%;height: 100%">
+    <img th:src="@{/static/image/login.jpg}" style="width: 100%; height: 100%;">
+</div>
+
+<div style="position: absolute; top: 120px; right: 100px;width:450px;height:500px;border:3px solid #87CEFA">
+    <div style="position: absolute; top: 0px; right: 60px;height: 430px;">
+        <div class="page-header">
+            <h1>用户注册</h1>
+        </div>
+        <form th:action="@{/userRegister}"  role="form" style="height: 280px">
+            <div class="form-group form-group-lg" style="height: 280px;">
+                <div style="width: 350px;">
+                    <input class="form-control" type="text" id="registerName" placeholder="用户名">
+                </div>
+                <div style="width: 350px; position: relative;top: 20px;">
+                    <input class="form-control" type="password" id="registerPassword" placeholder="密码">
+                </div>
+                <div style="width: 350px; position: relative;top: 40px;">
+                    <input class="form-control" type="password" id="registerVerifyPassword" placeholder="确认密码">
+                </div>
+                <div style="width: 150px; position: relative;top: 60px;">
+                    <input class="form-control" type="text" id="verify" placeholder="验证码">
+                    <img th:src="@{/getVerifyCode}" id="verifyCode" style="position: absolute; height: 46px;top: 0px;left: 160px;"/>
+                    <a href="javascript:void(0)" style="display:block;text-decoration:none; position: absolute; width:90px;height: 46px;top: 0px;left: 260px;">看不清楚？换一张</a>
+                </div>
+                <div class="checkbox"  style="position: relative;top: 70px; left: 10px;">
+                    <span id="message" style="color: red"></span>
+                </div>
+                <button type="button" id="registerBtn" class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 90px;">注册</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

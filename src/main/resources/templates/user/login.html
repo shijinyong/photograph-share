@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录界面</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/static/css/noticejs.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/static/bootstrap/bootstrap_3.3.0/css/bootstrap.min.css}" />
+
+    <script type="text/javascript" th:src="@{/static/jquery/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/notice.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            //回车登录
+            $(window).keydown(function (e) {
+                // 如果用户输入回车键，则进行登录,回车键ASCII码为13
+                if(e.keyCode==13){
+                    //登录按钮模拟一次事件
+                    $("#loginBtn").click();
+                }
+            });
+            //记住密码时自动填充输入框
+            var initName = $("#initName").attr("acc");
+            $("#loginName").val(initName);
+            var initPassword = $("#initPassword").attr("acc");
+            $("#loginPassword").val(initPassword);
+            //点击按钮登录
+            $("#loginBtn").click(function () {
+                //获取用户名和密码
+                var loginName = $.trim($("#loginName").val());
+                var loginPassword = $.trim($("#loginPassword").val());
+                //获取免登陆是否选中
+                var isRemPassword = $("#isRemPassword").prop("checked");
+                //获取验证码
+                var verify = $.trim($("#verify").val());
+                //发送请求
+                $.ajax({
+                    url:'/userLogin',
+                    data:{
+                        loginName:loginName,
+                        loginPassword:loginPassword,
+                        isRemPassword:isRemPassword,
+                        verify:verify
+                    },
+                    type:'post',
+                    dataType:'json',
+                    success:function (response) {
+                        if(response.code == 202){
+                            $("#message").html(response.message);
+                        }else if(response.code==203){
+                            $("#message").html(response.message);
+                        }else if(response.code==200){
+                            new NoticeJs({
+                                text: '登录成功',
+                                position: 'topCenter',
+                            }).show();
+                            //登录成功后3秒再进行跳转
+                            window.setTimeout(function () {
+                                window.location.href="/toIndex";
+                            },3000);
+                        }
+                    },
+                    error:function () {
+                        $("#message").html("发生错误了");
+                    },
+                    beforeSend:function () {
+                        //表单验证
+                        if(loginName==""){
+                            $("#message").html("用户名不能为空!");
+                            return false;
+                        }
+                        if(loginPassword==""){
+                            $("#message").html("密码不能为空!");
+                            return false;
+                        }
+                        if(verify==""){
+                            $("#message").html("验证码不能为空!");
+                            return false;
+                        }
+                        //当发送ajax请求前使用该函数进行验证，当该函数返回true时则
+                        //执行ajax请求，否则不执行
+                        $("#message").html("正在登录.....");
+                        return true;
+                    }
+                });
+
+
+            });
+            //点击超链接刷新图片
+            $("a").click(function (){
+                $("#verifyCode").attr("src","/getVerifyCode?"+new Date().getTime());
+            });
+            //注册跳转
+            $("#registerBtn").click(function (){
+                window.location.href="/toUserRegister";
+            });
+
+        });
+    </script>
+</head>
+
+<body >
+
+<div style="position: absolute; top: 0px; left: 0px; width: 100%;height: 100%">
+    <img th:src="@{/static/image/login.jpg}" style="width: 100%; height: 100%;">
+</div>
+
+<div style="position: absolute; top: 120px; right: 100px;width:450px;height:500px;border:3px solid #87CEFA">
+    <div style="position: absolute; top: 0px; right: 60px;height: 430px;">
+        <div class="page-header">
+            <h1>用户登录</h1>
+        </div>
+        <form th:action="@{/userLogin}"  role="form" style="height: 280px">
+            <div class="form-group form-group-lg" style="height: 280px;">
+                <div style="width: 350px;">
+                    <input class="form-control" type="text" id="loginName" placeholder="用户名">
+                    <!--获取存放的cookie，没有则不填充输入框-->
+                    <span id="initName" th:each="cookie:${#httpServletRequest.getCookies()}"
+                          th:if="${cookie.getName().equals('loginName')}"
+                          th:acc="${cookie.getValue()}"></span>
+                </div>
+                <div style="width: 350px; position: relative;top: 20px;">
+                    <input class="form-control" type="password" id="loginPassword" placeholder="密码">
+                    <span id="initPassword" th:each="cookie:${#httpServletRequest.getCookies()}"
+                          th:if="${cookie.getName().equals('loginPassword')}"
+                          th:acc="${cookie.getValue()}"></span>
+                </div>
+                <div style="width: 150px; position: relative;top: 40px;">
+                    <input class="form-control" type="text" id="verify" placeholder="验证码">
+                    <img th:src="@{/getVerifyCode}" id="verifyCode" style="position: absolute; height: 46px;top: 0px;left: 160px;"/>
+                    <a href="javascript:void(0)" style="display:block;text-decoration:none; position: absolute; width:90px;height: 46px;top: 0px;left: 260px;">看不清楚？换一张</a>
+                </div>
+                <div class="checkbox"  style="position: relative;top: 50px; left: 10px;">
+                    <label>
+                        <input type="checkbox" id="isRemPassword" checked> 七天内记住账号密码
+                    </label>
+                    <span id="message" style="color: red"></span>
+                </div>
+                <button type="button" id="loginBtn" class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 65px;">登录</button>
+                <button type="button" id="registerBtn" class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 80px;">注册</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

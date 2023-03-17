@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" th:href="@{/static/bootstrap/bootstrap-icons/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/static/bootstrap/bootstrap_5.1.3/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/static/dist/css/BSA.css}">
+    <title>个人资料</title>
+</head>
+<body class="bg-light pt-2">
+<div class="container-fluid">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" id="form2">
+                                <div class="mb-3 row">
+                                    <label for="name" class="col-sm-3 col-form-label">用户名</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="name" name="name">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
+                                    <label for="phone" class="col-sm-3 col-form-label">手机号</label>
+                                    <div class="col-sm-9">
+                                        <input type="tel" class="form-control" id="phone" name="phone">
+                                    </div>
+                                </div>
+                               <!-- <div class="mb-3 row">
+                                    <label for="gender2Radio1" class="col-sm-3 col-form-label">性别</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender2"
+                                                   id="gender2Radio1" value="先生" checked>
+                                            <label class="form-check-label" for="gender2Radio1">先生</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="gender2"
+                                                   id="gender2Radio2" value="女士">
+                                            <label class="form-check-label" for="gender2Radio2">女士</label>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="mb-3 row">
+                                    <label for="age" class="col-sm-3 col-form-label">年龄</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="age" name="age" value="100">
+                                    </div>
+                                </div>
+
+
+                                <div class="mb-3 row">
+                                    <div class="col-sm-9 offset-sm-3">
+                                        <button id="updateUserAccount" class="btn btn-primary">保存更改</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/static/bootstrap/bootstrap_5.1.3/js/bootstrap.bundle.js}"></script>
+<script type="text/javascript" th:src="@{/static/dist/js/BSA.js}"></script>
+<script type="text/javascript" th:src="@{/static/jquery/jquery.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $.get("/user/manage/pages/getUserAccount",function (response) {
+            if(response.code==200){
+                $("#name").val(response.data.name);
+                $("#phone").val(response.data.phone);
+                $("#age").val(response.data.age);
+            }
+        });
+        $("#updateUserAccount").click(function () {
+            //收集参数
+            var name = $("#name").val();
+            var phone = $("#phone").val();
+            var age = $("#age").val();
+            if(name==""){
+                alert("用户名不能为空");
+                return;
+            }
+            //将string类型转换为number类型传输后端
+            var parsePhone = parseInt(phone);
+            var parseAge = parseInt(age);
+            $.ajax({
+                url:"/user/manage/pages/updateUserAccount",
+                data:{
+                    name:name,
+                    phone:parsePhone,
+                    age:parseAge
+                },
+                type:'post',
+                dataType:'json',
+                success:function (response) {
+                    if(response.code==200){
+                        alert("修改个人资料成功!");
+                    }
+                    if(response.code==201){
+                        alert("修改个人资料失败!");
+                    }
+                    if(response.code==204){
+                        alert("用户名已存在!");
+                    }
+
+                },
+                error:function () {
+                    alert("发生错误了");
+                }
+
+            });
+        });
+    });
+</script>
+</body>
+</html>

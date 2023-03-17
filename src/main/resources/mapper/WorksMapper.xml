@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photograph.system.mapper.WorksMapper">
+
+    <resultMap id="BaseResultMap" type="com.photograph.system.model.Works">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="src" column="src" jdbcType="VARCHAR"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,description,title,
+        create_time,update_time,src,
+        is_deleted
+    </sql>
+
+    <select id="selectWorksPage" resultMap="BaseResultMap">
+        select a.id,a.description,a.title,a.create_time,
+        a.update_time,a.src,a.is_deleted
+        from works as a
+        join user_works as b
+        on a.id=b.works_id
+        and b.user_id = #{userId}
+        <where>
+            <if test="userWorks!=null and userWorks!=''">
+                and (a.description like concat('%',#{userWorks},'%')
+                or a.title like concat('%',#{userWorks},'%'))
+            </if>
+            and a.is_deleted = 0
+        </where>
+        order by a.create_time desc
+    </select>
+</mapper>

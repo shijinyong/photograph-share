@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>摄影分享交流网站</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/font-awesome.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/owl.carousel.css}" media="screen" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/owl.theme.css}" media="screen" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/settings.css}" media="screen" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/style-red.css}" media="screen" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/tk.css}" media="screen" />
+    <script type="text/javascript" th:src="@{/static/jquery/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/owl.carousel.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/static/js/jquery.migrate.js}"></script>
+
+    <script type="text/javascript" th:src="@{/static/js/jquery.imagesloaded.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/retina-1.1.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/jquery.themepunch.tools.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/jquery.themepunch.revolution.min.js}"></script>
+    <script type="text/javascript" th:src="@{/static/js/script.js}"></script>
+
+</head>
+
+<body>
+<div id="container">
+    <header class="clearfix" id="header-sec">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right" id="navigation">
+                        <li class="Lev1">
+                            <a href="index.html" class='menu1 active'>网站首页 </a>
+                        </li>
+
+                        <li class="Lev1">
+                            <a href="product.html" class="menu1 ">摄影作品
+                                <i class="fa fa-caret-down"></i></a>
+                            <ul class="drop-down sub-menu2">
+
+                                <li class="Lev2">
+                                    <a href="product.html" class="menu2">二通道/上下型</a>
+                                </li>
+
+                                <li class="Lev2">
+                                    <a href="product.html" class="menu2">三通道/转弯型</a>
+                                </li>
+
+                                <li class="Lev2">
+                                    <a href="product.html" class="menu2">四通道/动作型</a>
+                                </li>
+
+                                <li class="Lev2">
+                                    <a href="product.html" class="menu2">X-SERIES系列</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="Lev1">
+                            <a href="product_diy.html" class="menu1 ">定制案例
+                            </a>
+
+                        </li>
+                        <li class="Lev1">
+                            <a href="news.html" class="menu1 ">新闻资讯
+                            </a>
+
+
+
+                        <li th:if="${session.loginAccount!=null and session.loginAccount!=''and session.loginAccount.getStatus()==0}" class="Lev1">
+                            <a th:href="@{/user/manage/index}" class="menu1 ">个人中心
+                            </a>
+                        </li>
+                        <li th:if="${session.loginAccount!=null and session.loginAccount!=''and session.loginAccount.getStatus()==1}" class="Lev1">
+                            <a th:href="@{/user/manage/manageIndex}" class="menu1 ">个人中心
+                            </a>
+                        </li>
+                        <li th:if="${session.loginAccount==null or session.loginAccount==''}" class="Lev1">
+                            <a th:href="@{/toUserLogin}" class="menu1 ">登录/注册
+                            </a>
+                        </li>
+                        <li class="search nav-search">
+                            <a href="javascript:;" class="open-search"><i class="fa fa-search"></i></a>
+                            <form class="form-search" id="searchform" name="formsearch" action="javascript:;">
+                                <input type="hidden" name="kwtype" value="0" />
+                                <input type="search" value="" name="q" class="search-input" placeholder="输入关键字" />
+                                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home-section" class="slider1">
+        <div class="tp-banner-container">
+            <div class="tp-banner">
+                <ul>
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on" data-title="banner1"> <img th:src="@{/static/image/图片8.jpg}" alt="幻灯3" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat" /> </li>
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on" data-title="banner1"> <img th:src="@{/static/image/图片9.jpg}" alt="幻灯2" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat" /> </li>
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="500" data-saveperformance="on" data-title="banner1"> <img th:src="@{/static/image/图片10.jpg}" alt="幻灯1" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat" /> </li>
+
+                </ul>
+                <div class="tp-bannertimer"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section" id="index-portfolio">
+        <div class="container">
+            <h3 class="text-center section-title"><a href="javascript:;">摄影图片</a> </h3>
+            <div class="portfolio-box owl-wrapper">
+                <div class="owl-carousel" data-num="4">
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片11.jpg}" alt="摄影图片二" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片二</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片二">摄影图片二</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片12.jpg}" alt="摄影图片八" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片八</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片八">摄影图片八</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片13.jpg}" alt="摄影图片九" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片九</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片九">摄影图片九</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片14.jpg}" alt="摄影图片七" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片七</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片七">摄影图片七</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片15.jpg}" alt="摄影图片六" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片六</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片六">摄影图片六</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片20.jpg}" alt="摄影图片四" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片四</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片四">摄影图片四</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片17.jpg}" alt="摄影图片五" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片五</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片五">摄影图片五</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片18.jpg}" alt="摄影图片三" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片三</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片三">摄影图片三</a></h3>
+                    </div>
+                    <div class="item project-post">
+                        <div class="project-gallery"> <img th:src="@{/static/image/图片19.jpg}" alt="摄影图片一" />
+                            <div class="hover-box">
+                                <div class="inner-hover">
+                                    <h2><a href="javascript:;">摄影图片一</a></h2>
+                                    <span>风景摄影</span> </div>
+                            </div>
+                        </div>
+                        <h3 class="iport-h3-title"><a href="javascript:;" title="摄影图片一">摄影图片一</a></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="news-section" id="index-news">
+        <div class="container">
+            <h3 class="text-center section-title"><a href="javascript:;">新闻资讯</a> </h3>
+            <div class="news-box owl-wrapper">
+                <div class="owl-carousel" data-num="4">
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="纽约马拉松安保升级 遥控飞机自拍器成违" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="纽约马拉松安保升级 遥控飞机自拍器成违">纽约马拉松安保升级 遥控飞机自拍器成违</a></h2>
+                            <p class="desc">当年发生在波士顿马拉松的爆炸案震惊了整个世界，如今美国国内举行的所有马拉松赛事都大幅提升了安保级别，在今年的纽...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="遥控飞机致孩子眼睛失明 盘点家中隐藏“" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="遥控飞机致孩子眼睛失明 盘点家中隐藏“">遥控飞机致孩子眼睛失明 盘点家中隐藏“</a></h2>
+                            <p class="desc">据英国每日邮报报道，18个月的孩子OscarWebb眼球被遥控飞机切开，致右眼失明。事发时，Oscar正在花园里玩，家里一位操作遥...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="《遥控飞机模拟器》带你冲上云霄" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="《遥控飞机模拟器》带你冲上云霄">《遥控飞机模拟器》带你冲上云霄</a></h2>
+                            <p class="desc">模拟游戏Airplane RC Flight Simulator 《遥控飞机模拟器》是一款模拟遥控飞机的模拟器，其实本来遥控飞机就是会飞的飞机模型，...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="关于FPV摄像头C4008和C4010的画质解疑" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="关于FPV摄像头C4008和C4010的画质解疑">关于FPV摄像头C4008和C4010的画质解疑</a></h2>
+                            <p class="desc">最近有很多客户反映C4008和C4010图传画质是360P的，其实不然。 FPV APP软件设置的手机端分辨率是640*360的，这样是为了提高图传...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="遥控飞机入门指南系列（二）F45的调试" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="遥控飞机入门指南系列（二）F45的调试">遥控飞机入门指南系列（二）F45的调试</a></h2>
+                            <p class="desc">一、新机到货后的检查 在这里强调一下，以后无论大家购入什么飞机，新机到手后距离起飞还有许多事要干，不要直接拿来...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="你的遥控飞机“听话”吗？实测发现部分" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="你的遥控飞机“听话”吗？实测发现部分">你的遥控飞机“听话”吗？实测发现部分</a></h2>
+                            <p class="desc">1 在飞行及转弯过程中，4架飞机均不同程度晃动，其中一架甚至偏离方向直接落下。 2 4架飞机均无法在空中长时间悬停，悬...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="未来城市的无人机送货系统是怎样的？" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="未来城市的无人机送货系统是怎样的？">未来城市的无人机送货系统是怎样的？</a></h2>
+                            <p class="desc">一直以来无人机是我们热衷的话题，据第三方机构Statista预测，全美2017年消费级无人机销售额将达到前所未有的约13亿美元，...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="item news-post">
+                        <div class="news-gallery">
+                            <a href="javascript:;" class="thumb-link"><img th:src="@{/static/image/图片7.jpg}" alt="《遥控飞机模拟器》怎么玩 玩法技巧详解" /></a>
+                            <div class="date-post">
+                                <p>2018-04 <span>24</span></p>
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h2 class="inews-title"><a href="javascript:;" title="《遥控飞机模拟器》怎么玩 玩法技巧详解">《遥控飞机模拟器》怎么玩 玩法技巧详解</a></h2>
+                            <p class="desc">《遥控飞机模拟器》(Airplane RC Flight Simulator)是开发商Phouthasone Bouapha推出的一款模拟游戏。《遥控飞机模拟器》以飞机为主题...</p>
+                            <a href="javascript:;" class="news-readmore">阅读更多 <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<style>
+    .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+</style>
+
+</body>
+
+</html>
